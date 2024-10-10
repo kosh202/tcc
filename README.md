@@ -4,10 +4,10 @@
 
 - [Interface](README.md)
 
-Comecei fazendo uma interface simples usando a biblioteca _TKINTER_ para a criação da janela e dos botões.
+Primeiro fizemos uma interface simples usando a biblioteca _TKINTER_ para a criação da janela e dos botões.
 
 ![img_da_interface](img/interface.png)
 
-Depois de apertar o botão para a gravação terá 5 segundos para fazer a gravação e em seguida aparecera a img do spectograma do audio gravado.
+Ao apertar o botão para a gravação, 5 segundos de áudio serão gravados, e em seguida aparecerá a imagem do espectograma do audio gravado.
 
 ![img_da_interface](img/spectograma.png)
