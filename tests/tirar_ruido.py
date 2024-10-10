@@ -1,7 +1,6 @@
-# codigo simples
-
 import librosa
 import noisereduce
+import soundfile as sf
 
 # Carregar o áudio
 audio, sr = librosa.load('audio.wav')
@@ -10,4 +9,4 @@ audio, sr = librosa.load('audio.wav')
 reduced_noise = noisereduce.reduce_noise(y=audio, sr=sr)
 
 # Salvar o áudio processado
-librosa.output.write_wav('audio_processado.wav', reduced_noise, sr)
+sf.write('audio_processado.wav', reduced_noise, sr)
