@@ -1,32 +1,36 @@
 import soundfile as sf
 from noisereduce.generate_noise import band_limited_noise
 import matplotlib.pyplot as plt
-import urllib.request
-import io
 import numpy as np
 
-# URL do arquivo de áudio
-url = "https://raw.githubusercontent.com/timsainb/noisereduce/master/assets/fish.wav"
-response = urllib.request.urlopen(url)
-
-# Ler o áudio
-data, rate = sf.read(io.BytesIO(response.read()))
+# Caminho do arquivo de áudio local
+file_path = "tt1.wav" 
+data, rate = sf.read(file_path)
 
 # Adicionar ruído
-# Defina a intensidade do ruído (por exemplo, 0.005)
-# noise_intensity = 0.005
-# noise = noise_intensity * np.random.randn(*data.shape)
-noise_len = 2 # seconds
-noise = band_limited_noise(min_freq=2000, max_freq = 12000, samples=len(data), samplerate=rate)*10
-noise_clip = noise[:rate*noise_len]
-
-# Misturar o áudio original com o ruído
+noise_len = 2  # segundos
+noise = band_limited_noise(min_freq=2000, max_freq=12000, samples=len(data), samplerate=rate) * 10
 audio_clip_band_limited = data + noise
 
-# Plotar o áudio com ruído
-plt.figure(figsize=(20, 3))
+# Criar a janela para os gráficos
+plt.figure(figsize=(20, 8))
+
+# Gráfico do áudio original
+plt.subplot(1, 2, 1)
+plt.plot(data)
+plt.title("Áudio Original")
+plt.xlabel("Amostras")
+plt.ylabel("Amplitude")
+
+# Gráfico do áudio modificado
+plt.subplot(1, 2, 2)
 plt.plot(audio_clip_band_limited)
 plt.title("Áudio com Ruído Adicionado")
+plt.xlabel("Amostras")
+plt.ylabel("Amplitude")
+
+# Exibir os gráficos
+plt.tight_layout()
 plt.show()
 
 # Salvar o áudio modificado como um arquivo .wav
