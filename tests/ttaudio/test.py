@@ -55,9 +55,13 @@ label_status.pack(pady=10)
 button_gravar = tk.Button(root, text="Gravar", command=on_button_click)
 button_gravar.pack(pady=10)
 
+# button_sair = tk.Button(root, text="Sair", command=root.destroy)
+# button_sair.pack(pady=10)
+
 # Frame para o espectrograma
 frame_espectrograma = tk.Frame(root)
 frame_espectrograma.pack(fill=tk.BOTH, expand=True)
 
 # Iniciar o loop da interface
 root.mainloop()
+# exit_button = tk.Button(root, text="Exit", command=root.destroy)
