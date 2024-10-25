@@ -1,0 +1,1 @@
+Normalize os níveis de volume dos áudios.

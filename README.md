@@ -1,6 +1,6 @@
 # tcc
 
-- [Explicamento do codigo](explicacaoCodigo.md)
+- [Explicação do codigo](explicacaoCodigo.md)
 
 - [Interface](README.md)
 
