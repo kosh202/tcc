@@ -26,8 +26,12 @@ if not file_path:
     print("Nenhum arquivo de áudio selecionado.")
     exit()
 
-# Ler o arquivo de áudio
-data, rate = sf.read(file_path)
+try:
+    # Ler o arquivo de áudio
+    data, rate = sf.read(file_path)
+except Exception as e:
+    print(f"Erro ao ler o arquivo de áudio: {e}")
+    exit()
 
 # Adicionar ruído
 noise_len = 2  # segundos
@@ -64,7 +68,9 @@ if not folder_path:
 # Definir o nome do arquivo de saída
 output_file = os.path.join(folder_path, "audio_com_ruido.wav")
 
-# Salvar o áudio modificado como um arquivo .wav na pasta escolhida
-sf.write(output_file, audio_clip_band_limited, rate)
-
-print(f"Áudio com ruído salvo em: {output_file}")
+try:
+    # Salvar o áudio modificado como um arquivo .wav na pasta escolhida
+    sf.write(output_file, audio_clip_band_limited, rate)
+    print(f"Áudio com ruído salvo em: {output_file}")
+except Exception as e:
+    print(f"Erro ao salvar o arquivo de áudio: {e}")
