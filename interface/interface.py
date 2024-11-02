@@ -24,6 +24,20 @@ def gravacao(label_status, duracao, fs):
         label_status.config(text="Erro na gravação.")
         messagebox.showerror("Erro", str(e))
 
+def mostrarImgOk():
+    # Carregar e exibir uma imagem
+    try:
+        imagem = Image.open("./img/ok.png")  # Substitua pelo caminho da sua imagem
+        imagem = imagem.resize((200, 200), Image.LANCZOS)  # Redimensiona a imagem
+        img_tk = ImageTk.PhotoImage(imagem)
+
+        label_imagem = tk.Label(janela, image=img_tk)
+        label_imagem.image = img_tk  # Manter uma referência à imagem
+        label_imagem.place(x=100, y=90)  # Posição da imagem
+    except Exception as e:
+        messagebox.showerror("Erro ao carregar imagem", str(e))
+
+
 def main():
     duracao = 2  # duração em segundos
     fs = 44100  # taxa de amostragem
@@ -34,28 +48,18 @@ def main():
     janela.geometry("400x300")
 
     # Label de status
-    label_status = tk.Label(janela, text=" ")
+    label_status = tk.Label(janela, text="oi")
     label_status.place(x=30, y=20)
 
     # Botão de gravação
     gravar = tk.Button(janela, text="Gravar", command=lambda: gravacao(label_status, duracao, fs), width=15, height=2)
-    gravar.place(x=25, y=60)
+    gravar.place(x=25, y=40)
 
     # Botão para escolher arquivo
     escolherArquivo = tk.Button(janela, text="Escolher Arquivo", command=escolherAudio, width=20, height=2)
-    escolherArquivo.place(x=210, y=60)
+    escolherArquivo.place(x=230, y=40)
 
-    # Carregar e exibir uma imagem
-    try:
-        imagem = Image.open("./img/ok.png")  # Substitua pelo caminho da sua imagem
-        imagem = imagem.resize((200, 200), Image.LANCZOS)  # Redimensiona a imagem
-        img_tk = ImageTk.PhotoImage(imagem)
-
-        label_imagem = tk.Label(janela, image=img_tk)
-        label_imagem.image = img_tk  # Manter uma referência à imagem
-        label_imagem.place(x=100, y=120)  # Posição da imagem
-    except Exception as e:
-        messagebox.showerror("Erro ao carregar imagem", str(e))
+    mostrarImgOk()
 
     janela.mainloop()
 
