@@ -1,44 +1,46 @@
 import numpy as np
-import librosa
-import soundfile as sf
 import matplotlib.pyplot as plt
+from scipy.io import wavfile
 
-# Passo 1: Carregar o áudio
-audio, sr = librosa.load('audio.wav', sr=None)
+# Função para plotar o som original e o espectro de frequência
+def plot_audio_and_fft(file_path):
+    # Lê o arquivo de áudio
+    sample_rate, data = wavfile.read(file_path)
 
-# Passo 2: Aplicar a Transformada Rápida de Fourier (FFT)
-audio_fft = np.fft.fft(audio)
+    # Se o áudio for estéreo, pega apenas um canal
+    if len(data.shape) > 1:
+        data = data[:, 0]
 
-# Passo 3: Visualizar o espectro de frequências
-frequencies = np.fft.fftfreq(len(audio), 1/sr)
+    # Normaliza os dados
+    data = data / np.max(np.abs(data))
 
-plt.figure(figsize=(10, 6))
-plt.plot(frequencies[:len(frequencies)//2], np.abs(audio_fft)[:len(frequencies)//2])
-plt.title('Espectro de Frequências do Áudio')
-plt.xlabel('Frequência (Hz)')
-plt.ylabel('Magnitude')
-plt.grid()
-plt.show()
+    # Calcula o FFT
+    fft_result = np.fft.fft(data)
+    fft_magnitude = np.abs(fft_result)
+    fft_freq = np.fft.fftfreq(len(fft_magnitude), 1/sample_rate)
 
-# Passo 4: Identificar e remover ou atenuar frequências de ruído
-# Defina as faixas de frequências do ruído
-# Exemplo: supomos que o ruído está entre 1000Hz e 2000Hz
-frequencias_ruido = (frequencies > 1000) & (frequencies < 2000)
+    # Eixo de tempo em segundos
+    time = np.linspace(0, len(data) / sample_rate, num=len(data))
 
-# Atenuar as frequências de ruído
-audio_fft[frequencias_ruido] = 0
-audio_fft[-frequencias_ruido] = 0  # Atenuar as frequências negativas (simétricas)
+    # Plota o som original
+    plt.figure(figsize=(12, 6))
 
-# Passo 5: Reconstruir o áudio no domínio do tempo
-audio_filtrado = np.fft.ifft(audio_fft)
+    plt.subplot(2, 1, 1)
+    plt.title('Som Original')
+    plt.plot(time, data)
+    plt.xlabel('Tempo (s)')
+    plt.ylabel('Amplitude')
 
-# Converter o áudio filtrado para valores reais (descartar parte imaginária devido a erro numérico)
-audio_filtrado = np.real(audio_filtrado)
+    # Plota o espectro de frequência (log escala para magnitude)
+    plt.subplot(2, 1, 2)
+    plt.title('Espectro de Frequência (FFT)')
+    plt.semilogy(fft_freq[:len(fft_freq)//2], fft_magnitude[:len(fft_magnitude)//2])  # Escala log no eixo y
+    plt.xlabel('Frequência (Hz)')
+    plt.ylabel('Magnitude (log)')
 
-# Passo 6: Salvar o áudio filtrado
-sf.write('audio_filtrado.wav', audio_filtrado, sr)
+    plt.tight_layout()
+    plt.show()
 
-# Opcional: Reproduzir o áudio filtrado (caso queira ouvir)
-import sounddevice as sd
-sd.play(audio_filtrado, sr)
-sd.wait()
+# Caminho para o arquivo de áudio
+file_path = './seg_1.wav'  # Substitua pelo caminho do seu arquivo
+plot_audio_and_fft(file_path)
